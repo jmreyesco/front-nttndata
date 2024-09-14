@@ -1,0 +1,125 @@
+<div class="container h-100 d-flex justify-content-center align-items-center">
+  <div class="row w-100">
+    <div class="col-lg-6 mx-auto">
+      <div class="card shadow-sm">
+        <label class="gray">Todos los campos son obligatorios</label>
+        <div class="card-body">
+          <form id="contactForm" [formGroup]="form" (ngSubmit)="submit()">
+            <div class="form-group">
+              <label for="suscripcion">Tipo de Documentos</label>
+              <br />
+              <select
+                class="form-control"
+                id="suscripcion"
+                name="suscripcion"
+                formControlName="suscripcion"
+              >
+                <option
+                  *ngFor="let suscripcion of tipos"
+                  [value]="suscripcion.value"
+                >
+                  {{ suscripcion.text }}
+                </option>
+              </select>
+
+              <div
+                *ngIf="
+                  form.get('suscripcion')?.invalid &&
+                  (form.get('suscripcion')?.dirty ||
+                    form.get('suscripcion')?.touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="form.get('suscripcion')?.errors?.['required']">
+                  El tipo de documento es requerido
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="firstname">Número de documentos</label>
+              <input
+                type="text"
+                id="firstname"
+                class="form-control"
+                formControlName="firstname"
+                [(ngModel)]="numero"
+                (input)="onInput($event)"
+                [value]="numero | thousandSeparator"
+              />
+
+              <div
+                *ngIf="
+                  form.get('firstname')?.invalid &&
+                  (form.get('firstname')?.dirty ||
+                    form.get('firstname')?.touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="form.get('firstname')?.errors?.['required']">
+                  El número de documento es requerido
+                </div>
+                <div *ngIf="form.get('firstname')?.errors?.['minlength']">
+                  La longitud mínima del número de documento es 8 caracteres
+                </div>
+                <div *ngIf="form.get('firstname')?.errors?.['maxlength']">
+                  La longitud máxima del número de documento es 11 caracteres
+                </div>
+                <div *ngIf="form.get('firstname')?.errors?.['pattern']">
+                  Solo se admiten números
+                </div>
+              </div>
+            </div>
+
+            <br />
+
+            <div>
+              <div *ngIf="this.form.valid; else elseBlock">
+                <button
+                  id="btnSubmit"
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-primary btn-block"
+                  style="
+                    border-radius: 60px;
+                    background-color: rgb(53, 21, 183);
+                    border-color: rgb(165, 162, 162);
+                  "
+                  [disabled]="form.invalid"
+                  name="submit"
+                  (click)="goToAnotherPage()"
+                >
+                  <a
+                    [routerLink]="['/clientes/form', form.value.firstname]"
+                    routerLinkActive="class-name"
+                    style="color: white"
+                  >
+                    Buscar</a
+                  >
+                </button>
+              </div>
+              <ng-template #elseBlock>
+                <button
+                  id="btnSubmit"
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-primary btn-block"
+                  style="
+                    border-radius: 60px;
+                    background-color: rgb(204, 204, 219);
+                    border-color: rgb(174, 168, 168);
+                  "
+                  [disabled]="form.invalid"
+                  name="submit"
+                  (click)="goToAnotherPage()"
+                >
+                  <a style="color: rgb(136, 132, 132)"> Buscar</a>
+                </button>
+              </ng-template>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
